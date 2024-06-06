@@ -1,48 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel = "stylesheet" href = "style.css">
-</head>
-<body>
-    <div class = "outline">
-        <div class = "header"><img src = "./img/subway.png"></div>
-        <div class = "option_progress">
-            <div id = "choice_bread" style = "color: white;">◆빵 선택</div>
-            <div id = "choice_cheese">◆치즈 선택</div>
-            <div id = "choice_vege">◆야채 선택</div>
-            <div id = "choice_sauce">◆소스 선택</div>
-            <div id = "choice_additional">◆추가 선택</div>
-            <div id = "choice_set">◆세트 선택</div>
-        </div>
-        <div class = "option_section">
-           <!--이 부분을 변경-->
-           <div class = "option_section_full">
-            <div class = "option_section_full_down_arrow" id = "button_left"><img src = "./img/arrow_left.png"></div>
-                    
-                
-            </div>
-            <div class = "option_section_full_down_arrow" id = "button_right"><img src = "./img/arrow_right.png"></div>
-            </div>
-        
-        
-        <div class = "option_footer">
-            <div>
-                <p><span class = "option_footer_class">빵ㅤ</span><span id = "option_footer_bread"></span></p>
-                <p><span class = "option_footer_class">야채</span><span id = "option_footer_vege"></span></p>
-                <p><span class = "option_footer_class">추가</span><span id = "option_footer_addition"></span></p>
-            </div>
-            <div>
-                <p><span class = "option_footer_class">치즈</span><span id = "option_footer_cheese"></span></p>
-                <p><span class = "option_footer_class">소스</span><span id = "option_footer_sauce"></span></p>
-                <p><span class = "option_footer_class">세트</span><span id = "option_footer_set"></span></p>
-            </div>
-        </div>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script type="text/babel">
+      const root = document.getElementById("root");
 
-    </div>
+      //가장 바깥 라인
+      const Outline = ({ children }) => {
+        return <div className="outline">{children}</div>;
+      };
 
-    <script src = '../lib/option_test.js'></script>
-</body>
+      //서브웨이 로고
+      const Header = () => {
+        return (
+          <div className="header">
+            <img src="./img/subway.png" />
+          </div>
+        );
+      };
+
+      //옵션 진행 상황
+      const Option_progress = () => {
+        return (
+          <div className="option_progress">
+            <div id="choice_bread">◆빵 선택</div>
+            <div id="choice_cheese">◆치즈 선택</div>
+            <div id="choice_vege">◆야채 선택</div>
+          </div>
+        );
+      };
+
+      const Option_section = ({ data, setData }) => {
+        const onClickHandler = (event) => {
+          const id = event.target.id;
+          //event.target.id
+          if (id.startsWith("b")) {
+            setData((prevData) => ({ ...prevData, bread: id }));
+          } else if (id.startsWith("c")) {
+            setData((prevData) => ({ ...prevData, cheese: id }));
+          } else if (id.startsWith("v")) {
+            setData((prevData) => {
+              const updatedVege = prevData.vege.includes(id)
+                ? prevData.vege.filter((vegeId) => vegeId !== id)
+                : [...prevData.vege, id]; // Add if not selected
+              return { ...prevData, vege: updatedVege };
+            });
+          } else if (id === "done") {
+            alert(
+              `메뉴 옵션 \n 빵:${data.bread} 치즈:${data.cheese} 야채:${data.vege} 입니다.`
+            );
+          }
+        };
+
+        return (
+          <div class="option_section">
+            <form onClick={onClickHandler}>
+              <div class="opt_line">
+                <div class="opt_item">
+                  <img src="./img/img_recipe_b01.jpg" id="b01" />
+                  <div class="menu_name">빵01</div>
+                </div>
+                <div class="opt_item">
+                  <img src="./img/img_recipe_b02.jpg" id="b02" />
+                  <div class="menu_name">빵02</div>
+                </div>
+                <div class="opt_item">
+                  <img src="./img/img_recipe_b03.jpg" id="b03" />
+                  <div class="menu_name">빵03</div>
+                </div>
+              </div>
+              <div class="opt_line">
+                <div class="opt_item">
+                  <img src="./img/img_recipe_c01.jpg" id="c01" />
+                  <div class="menu_name">치즈01</div>
+                </div>
+                <div class="opt_item">
+                  <img src="./img/img_recipe_c02.jpg" id="c02" />
+                  <div class="menu_name">치즈02</div>
+                </div>
+                <div class="opt_item">
+                  <img src="./img/img_recipe_c03.jpg" id="c03" />
+                  <div class="menu_name">치즈03</div>
+                </div>
+              </div>
+              <div class="opt_line">
+                <div class="opt_item">
+                  <img src="./img/img_recipe_b01.jpg" id="v01" />
+                  <div class="menu_name">야채01</div>
+                </div>
+                <div class="opt_item">
+                  <img src="./img/img_recipe_b02.jpg" id="v02" />
+                  <div class="menu_name">야채02</div>
+                </div>
+                <div class="opt_item">
+                  <img src="./img/img_recipe_b03.jpg" id="v03" />
+                  <div class="menu_name">야채03</div>
+                </div>
+              </div>
+              <div style={{ float: "right" }}>
+                <img
+                  src="./img/img_btn.png"
+                  id="done"
+                  style={{ height: "90px", width: "240px" }}
+                />
+              </div>
+            </form>
+          </div>
+        );
+      };
+
+      const Footer = ({ data }) => {
+        return (
+          <div className="option_footer">
+            <div>
+              <p>
+                <span className="option_footer_class">빵ㅤ</span>
+                <span id="option_footer_bread">{data.bread}</span>
+              </p>
+              <p>
+                <span className="option_footer_class">치즈</span>
+                <span id="option_footer_cheese">{data.cheese}</span>
+              </p>
+              <p>
+                <span className="option_footer_class">야채</span>
+                <span id="option_footer_vege">{data.vege}</span>
+              </p>
+            </div>
+          </div>
+        );
+      };
+
+      function App() {
+        const [data, setData] = React.useState({
+          bread: "",
+          cheese: "",
+          vege: [],
+        });
+
+        return (
+          <Outline>
+            <Header />
+            <Option_progress />
+            <Option_section data={data} setData={setData} />
+            <Footer data={data} />
+          </Outline>
+        );
+      }
+
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
 </html>

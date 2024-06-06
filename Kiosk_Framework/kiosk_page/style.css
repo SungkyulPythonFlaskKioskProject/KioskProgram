@@ -1,183 +1,116 @@
 @charset "utf-8";
-
-@font-face{font-family: NG; src: local(※), url(NanumGothic.woff) format("woff");}
-body  {line-height: 1; font-family: NG, sans-serif; -webkit-text-size-adjust: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font: normal NG; }
-a:hover, a:visited, a:link, a:active{ text-decoration: none; } 
-
-body{
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
+body {
+  line-height: 1;
+  font-family: NG, sans-serif;
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font: normal NG;
+}
+a:hover,
+a:visited,
+a:link,
+a:active {
+  text-decoration: none;
 }
 
-.outline{
-    width: 720px;
-    height: 1280px;
-    border: 1px solid #DCDCDC;
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 
-.header{
-    width:100%;
-    height: 55px;
-    display: flex;
-    justify-content:left;
+.outline {
+  width: 720px;
+  height: 1280px;
+  border: 1px solid #dcdcdc;
 }
 
-.option_progress{
-    width:100%;
-    height: 96px;
-    background-color: #92C95B;
-    display: flex;
-    justify-content: left;
-    align-items: center;
+.header {
+  width: 100%;
+  height: 55px;
+  display: flex;
+  justify-content: left;
 }
 
-.option_progress div{
-    margin-left: 20px;
-    font-size: 19px;
-    font-weight: 1000;
+.option_progress {
+  width: 100%;
+  height: 96px;
+  background-color: #92c95b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.option_section{
-    width:100%;
-    height: 908px;
+.option_progress div {
+  margin-left: 20px;
+  font-size: 19px;
+  font-weight: 1000;
 }
 
-/*빵 선택 - Upper,down 분류*/
-#option_section_upper{
-    width: 100%;
-    height: 120px;
-    
-    display: flex;
-    float:left;
+.option_progress div:first-child {
+  margin-left: 0;
 }
 
-#option_section_upper > div{
-    width:50%;
+.option_section {
+  width: 100%;
+  height: 908px;
 }
 
-.option_upper_section_name{
-    margin-left: 15px;
-    margin-top: 20px;
-    font-size:18px;
+.option_section form {
+  height: 100%;
 }
 
-.option_twobutton{
-    height: 80px;
-    width: 100%;
-    display: flex;
-    float:left;
-    align-items: center;
+.opt_line {
+  height: 28%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: left;
 }
 
-.option_twobutton div{
-    width:40%;
-    margin:0px 10px 0px 10px;
-    padding:20px 0px 20px 0px;
-    border: 2px solid;
-    border-color: #92C95B;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 20px;
+.opt_item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#option_section_down{
-    width: 100%;
-    height:788px;
-    display: flex;
-    float: left;
+.menu_name {
+  margin-top: 5px;
+  font-size: 16px;
+  text-align: center;
 }
 
-.option_section_half_down_arrow{
-    width: 90px;
-    height: 100%;
-    margin-top:390px;
-    text-align: center;
+.option_section img {
+  width: 80%;
+  height: 60%;
 }
 
-.option_section_down_opts{
-    width:540px;
-    height: 100%;
-    display: flex;
-    float:left;
+.option_footer {
+  width: 100%;
+  height: 221px;
+  border: 1px solid #e2e2e2;
+  display: flex;
+  float: left;
+}
+.option_footer div {
+  width: 90%;
+  margin-left: 10px;
+  margin-top: 20px;
+  text-overflow: ellipsis;
+  font-size: 20px;
+  margin-left: 40px;
 }
 
-.option_section_down_opts > div{
-    width: 50%;
-    height: 100%;
-
+.option_footer div p {
+  margin-top: 30px;
 }
 
-.three_opts img{
-    width: 202.5px;
-    height: 142.5px;
-}
-
-.three_opts div{
-    text-align: center;
-    height: 33%;
-}
-
-.option_footer{
-    width:100%;
-    height: 221px;
-    border: 1px solid #E2E2E2;
-    display: flex;
-    float:left;
-}
-.option_footer div{
-    width:45%;
-    margin-left: 10px;
-    margin-top: 20px;
-    text-overflow: ellipsis;
-    font-size:20px;
-    margin-left: 40px;
-}
-
-.option_footer div p{
-    margin-top: 30px;
-}
-
-.option_footer_class{
-    background-color: #92C95B;
-    padding:10px;
-    border-radius: 10px;
-}
-
-/* 섹션이 화면을 다 차지하는 경우 사용*/
-.option_section_full{
-    height: 100%;
-    display: flex;
-    float:left;
-}
-
-.option_section_full_down_arrow{
-    width: 90px;
-    height: 100%;
-    margin-top:510px;
-    text-align: center;
-}
-
-.option_section_full_opts{
-    width:540px;
-    height: 100%;
-    display: flex;
-    float: left;
-}
-
-.option_section_full_opts > div{
-    width: 50%;
-    height: 100%;
-}
-
-.four_opts div{
-        text-align: center;
-        height: 25%;
-}
-
-.four_opts img{
-    width: 202.5px;
-    height: 142.5px;
+.option_footer_class {
+  background-color: #92c95b;
+  padding: 10px;
+  border-radius: 10px;
 }

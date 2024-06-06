@@ -1,162 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
-    <script type="text/babel">
-      const root = document.getElementById("root");
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="root"></div>
+        <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+        <script type="text/babel">
+            const root = document.getElementById("root");
 
-      //가장 바깥 라인
-      const Outline = ({ children }) => {
-        return <div className="outline">{children}</div>;
-      };
+            //가장 바깥 라인
+            const Outline = ({ children }) => {
+                return <div className='outline'>{children}</div>;
+            };
 
-      //서브웨이 로고
-      const Header = () => {
-        return (
-          <div className="header">
-            <img src="./img/subway.png" />
-          </div>
-        );
-      };
+            //서브웨이 로고
+            const Header = () => {
+                return (
+                    <div className='header'>
+                        <img src='./img/subway.png' />
+                    </div>
+                );
+            };
 
-      //옵션 진행 상황
-      const Option_progress = () => {
-        return (
-          <div className="option_progress">
-            <div id="choice_bread">◆빵 선택</div>
-            <div id="choice_cheese">◆치즈 선택</div>
-            <div id="choice_vege">◆야채 선택</div>
-          </div>
-        );
-      };
+            //옵션 진행 상황
+            const Option_progress = ({ currentStep }) => {
+                return (
+                    <div className='option_progress'>
+                        <div id='choice_bread' style={{ color: currentStep === 1 ? "white" : "black" }}>
+                            ◆빵 선택
+                        </div>
+                        <div id='choice_cheese' style={{ color: currentStep === 2 ? "white" : "black" }}>
+                            ◆치즈 선택
+                        </div>
+                        <div id='choice_vege' style={{ color: currentStep === 3 ? "white" : "black" }}>
+                            ◆야채 선택
+                        </div>
+                    </div>
+                );
+            };
 
-      const Option_section = ({ data, setData }) => {
-        const onClickHandler = (event) => {
-          const id = event.target.id;
-          //event.target.id
-          if (id.startsWith("b")) {
-            setData((prevData) => ({ ...prevData, bread: id }));
-          } else if (id.startsWith("c")) {
-            setData((prevData) => ({ ...prevData, cheese: id }));
-          } else if (id.startsWith("v")) {
-            setData((prevData) => {
-              const updatedVege = prevData.vege.includes(id)
-                ? prevData.vege.filter((vegeId) => vegeId !== id)
-                : [...prevData.vege, id]; // Add if not selected
-              return { ...prevData, vege: updatedVege };
-            });
-          } else if (id === "done") {
-            alert(
-              `메뉴 옵션 \n 빵:${data.bread} 치즈:${data.cheese} 야채:${data.vege} 입니다.`
-            );
-          }
-        };
+            const Option_section = ({ data, setData, currentStep, setCurrentStep, children }) => {
+                const onClickHandler = (event) => {
+                    const id = event.target.id;
+                    const alt = event.target.alt;
+                    //event.target.id
+                    if (id.startsWith("b")) {
+                        setData((prevData) => ({ ...prevData, bread: alt }));
+                    } else if (id.startsWith("c")) {
+                        setData((prevData) => ({ ...prevData, cheese: alt }));
+                    } else if (id.startsWith("v")) {
+                        setData((prevData) => {
+                            const updatedVege = prevData.vege.includes(alt)
+                                ? prevData.vege.filter((vegeId) => vegeId !== alt)
+                                : [...prevData.vege, alt]; // Add if not selected
+                            return { ...prevData, vege: updatedVege };
+                        });
+                        //다음 버튼
+                    } else if (id === "next") {
+                        if (currentStep === 1 && data.bread) {
+                            setCurrentStep(currentStep + 1);
+                        } else if (currentStep === 2 && data.cheese) {
+                            setCurrentStep(currentStep + 1);
+                        }
+                        //메뉴 선택 완료, data stringify하여 backend로 전달.
+                        else if (currentStep === 3 && data.vege.length > 0) {
+                            alert(`선택하신 옵션은 ${data.bread} ${data.cheese} ${data.vege} 입니다.`);
+                        } else {
+                            alert("선택을 완료해주세요.");
+                        }
+                    }
+                };
 
-        return (
-          <div class="option_section">
-            <form onClick={onClickHandler}>
-              <div class="opt_line">
-                <div class="opt_item">
-                  <img src="./img/img_recipe_b01.jpg" id="b01" />
-                  <div class="menu_name">빵01</div>
-                </div>
-                <div class="opt_item">
-                  <img src="./img/img_recipe_b02.jpg" id="b02" />
-                  <div class="menu_name">빵02</div>
-                </div>
-                <div class="opt_item">
-                  <img src="./img/img_recipe_b03.jpg" id="b03" />
-                  <div class="menu_name">빵03</div>
-                </div>
-              </div>
-              <div class="opt_line">
-                <div class="opt_item">
-                  <img src="./img/img_recipe_c01.jpg" id="c01" />
-                  <div class="menu_name">치즈01</div>
-                </div>
-                <div class="opt_item">
-                  <img src="./img/img_recipe_c02.jpg" id="c02" />
-                  <div class="menu_name">치즈02</div>
-                </div>
-                <div class="opt_item">
-                  <img src="./img/img_recipe_c03.jpg" id="c03" />
-                  <div class="menu_name">치즈03</div>
-                </div>
-              </div>
-              <div class="opt_line">
-                <div class="opt_item">
-                  <img src="./img/img_recipe_b01.jpg" id="v01" />
-                  <div class="menu_name">야채01</div>
-                </div>
-                <div class="opt_item">
-                  <img src="./img/img_recipe_b02.jpg" id="v02" />
-                  <div class="menu_name">야채02</div>
-                </div>
-                <div class="opt_item">
-                  <img src="./img/img_recipe_b03.jpg" id="v03" />
-                  <div class="menu_name">야채03</div>
-                </div>
-              </div>
-              <div style={{ float: "right" }}>
-                <img
-                  src="./img/img_btn.png"
-                  id="done"
-                  style={{ height: "90px", width: "240px" }}
-                />
-              </div>
-            </form>
-          </div>
-        );
-      };
+                return (
+                    <div class='option_section'>
+                        <form onClick={onClickHandler}>
+                            {children}
+                            <div style={{ float: "right", marginRight: "10px" }}>
+                                <img
+                                    src={currentStep < 3 ? "./img/img_next.png" : "./img/img_btn.png"}
+                                    id='next'
+                                    style={{ height: "70px", width: "200px" }}
+                                />
+                            </div>
+                        </form>
+                    </div>
+                );
+            };
 
-      const Footer = ({ data }) => {
-        return (
-          <div className="option_footer">
-            <div>
-              <p>
-                <span className="option_footer_class">빵ㅤ</span>
-                <span id="option_footer_bread">{data.bread}</span>
-              </p>
-              <p>
-                <span className="option_footer_class">치즈</span>
-                <span id="option_footer_cheese">{data.cheese}</span>
-              </p>
-              <p>
-                <span className="option_footer_class">야채</span>
-                <span id="option_footer_vege">{data.vege}</span>
-              </p>
-            </div>
-          </div>
-        );
-      };
+            const SelectBread = () => {
+                return (
+                    <div class='opt_div'>
+                        <h2 style={{ marginLeft: "10px" }}>빵 선택 </h2>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_b01.jpg' id='b01' alt='허니오트' />
+                                <div class='menu_name'>허니오트</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_b02.jpg' id='b02' alt='하티' />
+                                <div class='menu_name'>하티</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_b03.jpg' id='b03' alt='위트' />
+                                <div class='menu_name'>위트</div>
+                            </div>
+                        </div>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_b04.jpg' id='b04' alt='파마산 오레가노' />
+                                <div class='menu_name'>파마산 오레가노</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_b05.jpg' id='b05' alt='화이트' />
+                                <div class='menu_name'>화이트</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_b06.jpg' id='b06' alt='플랫브레드' />
+                                <div class='menu_name'>플랫브레드</div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
 
-      function App() {
-        const [data, setData] = React.useState({
-          bread: "",
-          cheese: "",
-          vege: [],
-        });
+            const SelectCheese = () => {
+                return (
+                    <div class='opt_div'>
+                        <h2 style={{ marginLeft: "10px" }}>치즈 선택 </h2>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_c01.jpg' id='c01' alt='아메리칸 치즈' />
+                                <div class='menu_name'>아메리칸 치즈</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_c02.jpg' id='c02' alt='슈레드 치즈' />
+                                <div class='menu_name'>슈레드 치즈</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_c03.jpg' id='c03' alt='모차렐라 치즈' />
+                                <div class='menu_name'>모차렐라 치즈</div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
 
-        return (
-          <Outline>
-            <Header />
-            <Option_progress />
-            <Option_section data={data} setData={setData} />
-            <Footer data={data} />
-          </Outline>
-        );
-      }
+            const SelectVege = () => {
+                return (
+                    <div class='opt_div'>
+                        <h2 style={{ marginLeft: "10px" }}>야채 선택 </h2>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v01.jpg' id='v01' alt='양상추' />
+                                <div class='menu_name'>양상추</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v02.jpg' id='v02' alt='토마토' />
+                                <div class='menu_name'>토마토</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v03.jpg' id='v03' alt='오이' />
+                                <div class='menu_name'>오이</div>
+                            </div>
+                        </div>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v04.jpg' id='v04' alt='피망' />
+                                <div class='menu_name'>피망</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v05.jpg' id='v05' alt='양파' />
+                                <div class='menu_name'>양파</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v06.jpg' id='v06' alt='피클' />
+                                <div class='menu_name'>피클</div>
+                            </div>
+                        </div>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v07.jpg' id='v07' alt='올리브' />
+                                <div class='menu_name'>올리브</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v08.jpg' id='v08' alt='할라피뇨' />
+                                <div class='menu_name'>할라피뇨</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_v09.jpg' id='v09' alt='아보카도' />
+                                <div class='menu_name'>아보카도</div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
 
-      ReactDOM.render(<App />, root);
-    </script>
-  </body>
+            const Footer = ({ data }) => {
+                return (
+                    <div className='option_footer'>
+                        <div>
+                            <p>
+                                <span className='option_footer_class'>빵ㅤ</span>
+                                <span id='option_footer_bread'>{data.bread}</span>
+                            </p>
+                            <p>
+                                <span className='option_footer_class'>치즈</span>
+                                <span id='option_footer_cheese'>{data.cheese}</span>
+                            </p>
+                            <p>
+                                <span className='option_footer_class'>야채</span>
+                                <span id='option_footer_vege'>{data.vege.join(" ")}</span>
+                            </p>
+                        </div>
+                    </div>
+                );
+            };
+
+            function App() {
+                const [data, setData] = React.useState({
+                    bread: "",
+                    cheese: "",
+                    vege: [],
+                });
+
+                const [currentStep, setCurrentStep] = React.useState(1);
+
+                return (
+                    <Outline>
+                        <Header />
+                        <Option_progress currentStep={currentStep} />
+                        <Option_section
+                            data={data}
+                            setData={setData}
+                            currentStep={currentStep}
+                            setCurrentStep={setCurrentStep}
+                        >
+                            {currentStep === 1 && <SelectBread />}
+                            {currentStep === 2 && <SelectCheese />}
+                            {currentStep === 3 && <SelectVege />}
+                        </Option_section>
+                        <Footer data={data} />
+                    </Outline>
+                );
+            }
+
+            ReactDOM.render(<App />, root);
+        </script>
+    </body>
 </html>

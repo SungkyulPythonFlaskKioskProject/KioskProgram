@@ -34,6 +34,20 @@ body {
     justify-content: left;
 }
 
+.select_type {
+    width: 100%;
+    height: 55px;
+    line-height: 55px;
+    display: flex;
+    justify-content: left;
+}
+
+.select_type div {
+    width: 50%;
+    text-align: center;
+    border: 1px solid;
+}
+
 .option_progress {
     width: 100%;
     height: 96px;

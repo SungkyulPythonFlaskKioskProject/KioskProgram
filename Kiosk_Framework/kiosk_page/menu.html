@@ -26,10 +26,43 @@
                 );
             };
 
+            const SelectType = ({ setType, type }) => {
+                const onClickHandler = (event) => {
+                    const id = event.target.id;
+                    if (id === "assemble") {
+                        setType(0);
+                    } else if (id === "full") {
+                        setType(1);
+                    }
+                };
+
+                return (
+                    <div className='select_type'>
+                        <div
+                            id='assemble'
+                            onClick={onClickHandler}
+                            style={{ backgroundColor: type === 0 ? "#D2D2D2" : "white" }}
+                        >
+                            조립식으로 구매
+                        </div>
+                        <div
+                            id='full'
+                            onClick={onClickHandler}
+                            style={{ backgroundColor: type === 1 ? "#D2D2D2" : "white" }}
+                        >
+                            완제품으로 구매
+                        </div>
+                    </div>
+                );
+            };
+
             const App = () => {
+                const [type, setType] = React.useState(0);
+
                 return (
                     <Outline>
                         <Header />
+                        <SelectType setType={setType} type={type} />
                     </Outline>
                 );
             };

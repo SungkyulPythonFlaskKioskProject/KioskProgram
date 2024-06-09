@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="../lib/signage.base.js"></script>
-    <title>키오스크</title>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>키오스크 메인화면</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="body">
+            <div class="outline">
+                <img src="./img/subway.png" alt="서브웨이" class="main_img" />
+                <div class="section"></div>
+                <div class="backimg">
+                    <img src="./img/img_main.jpg" class="main_img" />
+                </div>
+                <!-- SUBWAY 아래 선 -->
 
-<!-- main page, select page, option page, payment page 작성-->
-<body>
-    <div class = "outline"><a href = "./option.html">옵션 페이지</a></div>
-</body>
+                <div class="button-container">
+                    <button class="button" onclick="sendPostRequest('mall')">매장</button>
+                    <button class="button" onclick="sendPostRequest('pave')">포장</button>
+                    <!-- 가로 선 -->
+                    <div class="button-line"></div>
+                </div>
+            </div>
+        </div>
 
+        <script>
+            function sendPostRequest(type) {
+                let form = document.createElement("form");
+                form.setAttribute("method", "post");
+                form.setAttribute("action", "option.html");
+
+                let hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", "type");
+                hiddenField.setAttribute("value", type);
+
+                form.appendChild(hiddenField);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        </script>
+    </body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>키오스크 메인화면</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="root"></div>
+        <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+        <script type="text/babel">
+            const root = document.getElementById("root");
+
+            const Outline = ({ children }) => {
+                return <div className='outline'>{children}</div>;
+            };
+
+            const Header = () => {
+                return (
+                    <div className='header'>
+                        <img src='./img/subway.png' />
+                    </div>
+                );
+            };
+
+            const App = () => {
+                return (
+                    <Outline>
+                        <Header />
+                    </Outline>
+                );
+            };
+
+            ReactDOM.render(<App />, root);
+        </script>
+    </body>
+</html>

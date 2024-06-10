@@ -57,9 +57,14 @@ body {
     height: 1110px;
 }
 
-.menu_footer {
+.menu_div {
     width: 100%;
-    height: 65px;
+    height: 1085px;
+}
+
+.menu_div img {
+    width: 80%;
+    height: 60%;
 }
 
 .option_progress {
@@ -84,6 +89,20 @@ body {
 .option_section {
     width: 100%;
     height: 808px;
+}
+
+.opt_btn {
+    float: right;
+    margin-right: 10px;
+}
+
+.opt_btn img {
+    height: 70px;
+    width: 200px;
+}
+
+.opt_name {
+    margin-left: 10px;
 }
 
 .option_section form {
@@ -145,6 +164,10 @@ body {
     background-color: #92c95b;
     padding: 10px;
     border-radius: 10px;
+}
+
+.hidden {
+    display: none;
 }
 
 .section {

@@ -38,22 +38,133 @@
 
                 return (
                     <div className='select_type'>
-                        <div id='assemble' onClick={onClickHandler}>
+                        <div id='assemble' onClick={onClickHandler} className={type === 0 ? "type_selected" : ""}>
                             조립식으로 구매
                         </div>
-                        <div id='full' onClick={onClickHandler}>
+                        <div id='full' onClick={onClickHandler} className={type === 1 ? "type_selected" : ""}>
                             완제품으로 구매
                         </div>
                     </div>
                 );
             };
 
-            const SelectMenu = () => {
-                return <div className='select_menu'>a</div>;
-            };
+            const SelectMenu = ({ setMenu, menu, type }) => {
+                const onClickHandler = (event) => {
+                    const alt = event.target.alt;
+                    setMenu(alt);
 
-            const Menufooter = () => {
-                return <div className='menu_footer'>a</div>;
+                    const form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = "/option";
+
+                    const hiddenField = document.createElement("input");
+                    hiddenField.type = "hidden";
+                    hiddenField.name = "name";
+                    hiddenField.value = alt;
+
+                    const hiddenField2 = document.createElement("input");
+                    hiddenField2.type = "hidden";
+                    hiddenField2.name = "type";
+                    hiddenField2.value = type;
+
+                    form.appendChild(hiddenField);
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    alert(`${alt} 을(를) 선택하셨습니다.`);
+                };
+
+                return (
+                    <div className='menu_div'>
+                        <h2 className='opt_name'>메뉴 선택 </h2>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m01.png'
+                                    id='m01'
+                                    alt='로스트치킨'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>로스트치킨</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_m02.png' id='m02' alt='쉬림프' onClick={onClickHandler} />
+                                <div class='menu_name'>쉬림프</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m03.png'
+                                    id='m03'
+                                    alt='스파이시쉬림프'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>스파이시쉬림프</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                        </div>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m04.png'
+                                    id='m04'
+                                    alt='스테이크앤치즈'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>스테이크앤치즈</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m05.png'
+                                    id='m05'
+                                    alt='에그슬라이스'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>에그슬라이스</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m06.png'
+                                    id='m06'
+                                    alt='이탈리안비엠티'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>이탈리안비엠티</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                        </div>
+                        <div class='opt_line'>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m07.png'
+                                    id='m07'
+                                    alt='로티세리바비큐치킨'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>로티세리바비큐치킨</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img src='./img/img_recipe_m08.png' id='m08' alt='K바비큐' onClick={onClickHandler} />
+                                <div class='menu_name'>K바비큐</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                            <div class='opt_item'>
+                                <img
+                                    src='./img/img_recipe_m09.png'
+                                    id='m09'
+                                    alt='치킨베이컨아보카도'
+                                    onClick={onClickHandler}
+                                />
+                                <div class='menu_name'>치킨베이컨아보카도</div>
+                                <div class='menu_name'>5000원</div>
+                            </div>
+                        </div>
+                    </div>
+                );
             };
 
             const App = () => {
@@ -64,8 +175,7 @@
                     <Outline>
                         <Header />
                         <SelectType setType={setType} type={type} />
-                        <SelectMenu />
-                        <Menufooter />
+                        <SelectMenu setMenu={setMenu} menu={menu} type={type} />
                     </Outline>
                 );
             };

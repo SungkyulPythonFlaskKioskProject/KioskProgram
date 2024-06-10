@@ -15,7 +15,7 @@ app = Flask(
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template("menu.html")
+    return render_template("index.html")
 
 ################################################################################
 ## 여기에 필요한 기능 코드 작성
@@ -35,7 +35,19 @@ def order():
 @app.route('/menu', methods=['POST'])
 def menu():
     order_type = request.form.get("type")
-    return render_template("menu.html", order_type = order_type)
+    return render_template("menu.html")
+
+@app.route('/option', methods = ['POST'])
+def option():
+    name = request.form.get("name")
+    type = request.form.get("type")
+    return render_template("option.html")
+
+@app.route('/purchase', methods = ['POST'])
+def purchase():
+    name = request.form.get("name")
+    type = request.form.get("type")
+    return render_template("o.html")
 
 
 ## 주문 정보 가지고 오기

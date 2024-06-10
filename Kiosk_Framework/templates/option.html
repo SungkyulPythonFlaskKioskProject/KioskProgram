@@ -32,21 +32,11 @@
             const Option_progress = ({ currentStep }) => {
                 return (
                     <div className='option_progress'>
-                        <div id='choice_bread' style={{ color: currentStep === 1 ? "white" : "black" }}>
-                            ◆빵 선택
-                        </div>
-                        <div id='choice_cheese' style={{ color: currentStep === 2 ? "white" : "black" }}>
-                            ◆치즈 선택
-                        </div>
-                        <div id='choice_vege' style={{ color: currentStep === 3 ? "white" : "black" }}>
-                            ◆야채 선택
-                        </div>
-                        <div id='choice_vege' style={{ color: currentStep === 4 ? "white" : "black" }}>
-                            ◆추가토핑 선택
-                        </div>
-                        <div id='choice_vege' style={{ color: currentStep === 5 ? "white" : "black" }}>
-                            ◆세트 선택
-                        </div>
+                        <div id='choice_bread'>◆빵 선택</div>
+                        <div id='choice_cheese'>◆치즈 선택</div>
+                        <div id='choice_vege'>◆야채 선택</div>
+                        <div id='choice_vege'>◆추가토핑 선택</div>
+                        <div id='choice_vege'>◆세트 선택</div>
                     </div>
                 );
             };
@@ -77,7 +67,7 @@
                             return { ...prevData, vege: updatedVege };
                         });
                     }
-                    //야채 선택
+                    //추가 옵션 선택
                     else if (id.startsWith("a")) {
                         setData((prevData) => {
                             const updatedAddit = prevData.addit.includes(alt)
@@ -86,14 +76,21 @@
                             return { ...prevData, addit: updatedAddit };
                         });
                     }
-                    //야채 선택
-                    else if (id.startsWith("s")) {
-                        setData((prevData) => {
-                            const updatedVege = prevData.vege.includes(alt)
-                                ? prevData.vege.filter((vegeId) => vegeId !== alt)
-                                : [...prevData.vege, alt]; // Add if not selected
-                            return { ...prevData, vege: updatedVege };
-                        });
+                    //세트 선택
+                    else if (id === "s01") {
+                        setData((prevData) => ({ ...prevData, set: "세트" }));
+                    } else if (id === "s02") {
+                        setData((prevData) => ({ ...prevData, set: "단품", setMenu: [] }));
+                    } else if (id.startsWith("q")) {
+                        if (data.set === "단품") {
+                        } else {
+                            setData((prevData) => {
+                                const updatedSet = prevData.setMenu.includes(alt)
+                                    ? prevData.setMenu.filter((setId) => setId !== alt)
+                                    : [...prevData.setMenu, alt]; // Add if not selected
+                                return { ...prevData, setMenu: updatedSet };
+                            });
+                        }
                     }
                     //다음 버튼
                     else if (id === "next") {
@@ -108,7 +105,21 @@
                         }
                         //메뉴 선택 완료, data stringify하여 backend로 전달.
                         else if (currentStep === 5 && data.setMenu) {
-                            alert(`선택하신 옵션은 ${data.bread} ${data.length} ${data.cheese} ${data.vege} 입니다.`);
+                            alert(
+                                `선택하신 옵션은 ${data.bread} ${data.length} ${data.cheese} ${data.vege} ${data.addit} ${data.set} ${data.setMenu} 입니다.`
+                            );
+                            const form = document.createElement("form");
+                            form.method = "POST";
+                            form.action = "/purchase";
+
+                            const hiddenField = document.createElement("input");
+                            hiddenField.type = "hidden";
+                            hiddenField.name = "data";
+                            hiddenField.value = JSON.stringify(data);
+
+                            form.appendChild(hiddenField);
+                            document.body.appendChild(form);
+                            form.submit();
                         } else {
                             alert("선택을 완료해주세요.");
                         }
@@ -119,12 +130,8 @@
                     <div class='option_section'>
                         <form onClick={onClickHandler}>
                             {children}
-                            <div style={{ float: "right", marginRight: "10px" }}>
-                                <img
-                                    src={currentStep < 5 ? "./img/img_next.png" : "./img/img_btn.png"}
-                                    id='next'
-                                    style={{ height: "70px", width: "200px" }}
-                                />
+                            <div className='opt_btn'>
+                                <img src={currentStep < 5 ? "./img/img_next.png" : "./img/img_btn.png"} id='next' />
                             </div>
                         </form>
                     </div>
@@ -134,7 +141,7 @@
             const SelectBread = () => {
                 return (
                     <div class='opt_div'>
-                        <h2 style={{ marginLeft: "10px" }}>빵 선택 </h2>
+                        <h2 className='opt_name'>빵 선택 </h2>
                         <div class='opt_line'>
                             <div class='opt_item'>
                                 <img src='./img/15cm.png' id='l15' alt='15cm' />
@@ -181,7 +188,7 @@
             const SelectCheese = () => {
                 return (
                     <div class='opt_div'>
-                        <h2 style={{ marginLeft: "10px" }}>치즈 선택 </h2>
+                        <h2 className='opt_name'>치즈 선택 </h2>
                         <div class='opt_line'>
                             <div class='opt_item'>
                                 <img src='./img/img_recipe_c01.jpg' id='c01' alt='아메리칸 치즈' />
@@ -203,7 +210,7 @@
             const SelectVege = () => {
                 return (
                     <div class='opt_div'>
-                        <h2 style={{ marginLeft: "10px" }}>야채 선택 </h2>
+                        <h2 className='opt_name'>야채 선택 </h2>
                         <div class='opt_line'>
                             <div class='opt_item'>
                                 <img src='./img/img_recipe_v01.jpg' id='v01' alt='양상추' />
@@ -253,7 +260,7 @@
             const SelectAddit = () => {
                 return (
                     <div class='opt_div'>
-                        <h2 style={{ marginLeft: "10px" }}>야채 선택 </h2>
+                        <h2 className='opt_name'>야채 선택 </h2>
                         <div class='opt_line'>
                             <div class='opt_item'>
                                 <img src='./img/img_recipe_a01.png' id='a01' alt='미트추가' />
@@ -299,47 +306,44 @@
             const SelectSet = () => {
                 return (
                     <div class='opt_div'>
-                        <h2 style={{ marginLeft: "10px" }}>야채 선택 </h2>
+                        <h2 className='opt_name'>세트 선택 </h2>
                         <div class='opt_line'>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v01.jpg' id='v01' alt='양상추' />
-                                <div class='menu_name'>양상추</div>
+                                <img src='./img/img_set.png' id='s01' alt='세트' />
+                                <div class='menu_name'>세트 선택</div>
                             </div>
+
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v02.jpg' id='v02' alt='토마토' />
-                                <div class='menu_name'>토마토</div>
-                            </div>
-                            <div class='opt_item'>
-                                <img src='./img/img_recipe_v03.jpg' id='v03' alt='오이' />
-                                <div class='menu_name'>오이</div>
+                                <img src='./img/img_only.png' id='s02' alt='단품' />
+                                <div class='menu_name'>단품 선택</div>
                             </div>
                         </div>
                         <div class='opt_line'>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v04.jpg' id='v04' alt='피망' />
-                                <div class='menu_name'>피망</div>
+                                <img src='./img/img_recipe_b01.jpg' id='q01' alt='오트밀레이즌' />
+                                <div class='menu_name'>오트밀 레이즌</div>
                             </div>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v05.jpg' id='v05' alt='양파' />
-                                <div class='menu_name'>양파</div>
+                                <img src='./img/img_recipe_b02.jpg' id='q02' alt='더블초코칩' />
+                                <div class='menu_name'>더블 초코칩</div>
                             </div>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v06.jpg' id='v06' alt='피클' />
-                                <div class='menu_name'>피클</div>
+                                <img src='./img/img_recipe_b03.jpg' id='q03' alt='화이트초코칩' />
+                                <div class='menu_name'>화이트 초코 마카다미아</div>
                             </div>
                         </div>
                         <div class='opt_line'>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v07.jpg' id='v07' alt='올리브' />
-                                <div class='menu_name'>올리브</div>
+                                <img src='./img/img_recipe_b04.jpg' id='q04' alt='탄산음료' />
+                                <div class='menu_name'>탄산음료</div>
                             </div>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v08.jpg' id='v08' alt='할라피뇨' />
-                                <div class='menu_name'>할라피뇨</div>
+                                <img src='./img/img_recipe_b05.jpg' id='q05' alt='커피' />
+                                <div class='menu_name'>커피</div>
                             </div>
                             <div class='opt_item'>
-                                <img src='./img/img_recipe_v09.jpg' id='v09' alt='아보카도' />
-                                <div class='menu_name'>아보카도</div>
+                                <img src='./img/img_recipe_b06.jpg' id='q06' alt='우유' />
+                                <div class='menu_name'>우유</div>
                             </div>
                         </div>
                     </div>
@@ -370,7 +374,9 @@
                             </p>
                             <p>
                                 <span className='option_footer_class'>세트</span>
-                                <span id='option_footer_vege'></span>
+                                <span id='option_footer_vege'>
+                                    {data.set} {data.setMenu.join(" ")}
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -384,9 +390,8 @@
                     cheese: "",
                     vege: [],
                     addit: [],
-                    set: false,
+                    set: "",
                     setMenu: [],
-                    price: 0,
                 });
 
                 const [currentStep, setCurrentStep] = React.useState(1);

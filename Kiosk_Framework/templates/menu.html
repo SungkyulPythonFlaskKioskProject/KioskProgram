@@ -38,31 +38,34 @@
 
                 return (
                     <div className='select_type'>
-                        <div
-                            id='assemble'
-                            onClick={onClickHandler}
-                            style={{ backgroundColor: type === 0 ? "#D2D2D2" : "white" }}
-                        >
+                        <div id='assemble' onClick={onClickHandler}>
                             조립식으로 구매
                         </div>
-                        <div
-                            id='full'
-                            onClick={onClickHandler}
-                            style={{ backgroundColor: type === 1 ? "#D2D2D2" : "white" }}
-                        >
+                        <div id='full' onClick={onClickHandler}>
                             완제품으로 구매
                         </div>
                     </div>
                 );
             };
 
+            const SelectMenu = () => {
+                return <div className='select_menu'>a</div>;
+            };
+
+            const Menufooter = () => {
+                return <div className='menu_footer'>a</div>;
+            };
+
             const App = () => {
                 const [type, setType] = React.useState(0);
+                const [menu, setMenu] = React.useState("");
 
                 return (
                     <Outline>
                         <Header />
                         <SelectType setType={setType} type={type} />
+                        <SelectMenu />
+                        <Menufooter />
                     </Outline>
                 );
             };

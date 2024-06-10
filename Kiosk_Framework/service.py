@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, request, redirect, url_for, render_template
 import json
 from json import JSONEncoder
 import numpy
@@ -7,14 +7,15 @@ import os, logging
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='./', ## 정적 폴더 위치, default로 index.html을 불러옴
+    static_folder='static', ## 정적 폴더 위치, default로 index.html을 불러옴
+    template_folder='./templates' ##템플릿 파일 기본 폴더
 )
 
 ## 초기 설정
 @app.route('/')
 @app.route('/home')
 def home():
-    return app.send_static_file("./index.html")
+    return render_template("menu.html")
 
 ################################################################################
 ## 여기에 필요한 기능 코드 작성
@@ -29,6 +30,13 @@ def order():
     output = {"output": "none"}
     output = json.dumps(output, cls=NumpyArrayEncoder)
     return outputJSON(json.loads(output), "ok")
+
+
+@app.route('/menu', methods=['POST'])
+def menu():
+    order_type = request.form.get("type")
+    return render_template("menu.html", order_type = order_type)
+
 
 ## 주문 정보 가지고 오기
 @app.route('/kitch_page/getOrder', methods=['POST'])

@@ -45,9 +45,8 @@ def option():
 
 @app.route('/purchase', methods = ['POST'])
 def purchase():
-    name = request.form.get("name")
-    type = request.form.get("type")
-    return render_template("o.html")
+    data = request.form.get("data")
+    return render_template("purchase.html")
 
 
 ## 주문 정보 가지고 오기

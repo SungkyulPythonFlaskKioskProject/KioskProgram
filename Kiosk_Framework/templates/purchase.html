@@ -7,27 +7,69 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <div class="outline">
-            <div class="header">
-                <img src="./img/subway.png" alt="Subway" />
-            </div>
-            <div class="items">
-                <div class="item 에그-슬라이스">
-                    <div class="item-content">
-                        <img src="./img/img_recipe_b01.jpg" alt="에그 슬라이스" class="item-image" />
-                        <div class="item-name">에그 슬라이스</div>
+        <div id="root"></div>
+        <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+        <script type="text/babel">
+            const root = document.getElementById("root");
+
+            const Outline = ({ children }) => {
+                return <div className='outline'>{children}</div>;
+            };
+
+            const Header = () => {
+                return (
+                    <div className='header'>
+                        <img src='./img/subway.png' alt='Subway' />
                     </div>
-                    <div class="item-details">
-                        <p>빵: 15cm, 토스팅, 허니오트 야채: 오이, 올리브, 상추, 상추 추가</p>
-                        <p>치즈: 아메리칸 소스: 랜치 추가: X 세트: 단품</p>
-                    </div>
-                    <div class="quantity">
-                        <button class="increment">+</button>
-                        <span class="quantity-value">10</span>
-                        <button class="decrement">-</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                );
+            };
+
+            const Item = () => {
+                return <div className='items'>a</div>;
+            };
+
+            const App = () => {
+                const [orderType, setOrderType] = React.useState("");
+                const [name, setName] = React.useState("");
+                const [type, setType] = React.useState("");
+                const [option, setOption] = React.useState("");
+                React.useEffect(() => {
+                    const fetchData = async () => {
+                        try {
+                            const response = await fetch("/getData", {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                            });
+                            const data = await response.json();
+                            setOrderType(data.orderType);
+                            setName(data.name);
+                            setType(data.type);
+                            setOption(data.option);
+                        } catch (error) {
+                            console.error("Error fetching data:", error);
+                        }
+                    };
+
+                    fetchData();
+                }, []);
+
+                return (
+                    <Outline>
+                        <Header />
+                        <Item />
+                        <div>Order Type: {orderType}</div>
+                        <div>Name: {name}</div>
+                        <div>Type: {type}</div>
+                        <div>Option: {option}</div>
+                    </Outline>
+                );
+            };
+
+            ReactDOM.render(<App />, root);
+        </script>
     </body>
 </html>

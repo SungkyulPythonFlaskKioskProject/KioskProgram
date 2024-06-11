@@ -1,4 +1,4 @@
-from flask import Flask, request, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, render_template,jsonify,url_for,session
 import json
 from json import JSONEncoder
 import numpy
@@ -10,6 +10,8 @@ app = Flask(
     static_folder='static', ## 정적 폴더 위치, default로 index.html을 불러옴
     template_folder='./templates' ##템플릿 파일 기본 폴더
 )
+
+app.secret_key = 'aaaaaa'
 
 ## 초기 설정
 @app.route('/')
@@ -32,21 +34,63 @@ def order():
     return outputJSON(json.loads(output), "ok")
 
 
-@app.route('/menu', methods=['POST'])
+
+
+@app.route('/menu', methods=['POST','GET'])
 def menu():
-    order_type = request.form.get("type")
     return render_template("menu.html")
 
-@app.route('/option', methods = ['POST'])
+#Post일때는 name,type 저장 후 menu로 redirect, Get일때는 order type json 형식으로 반환
+@app.route('/getIndex', methods=['POST','GET'])
+def getIndex():
+    if request.method == 'POST':
+        order_type = request.form.get("type")
+        session['orderType'] = order_type
+        return redirect(url_for('menu'))
+    
+
+
+#Post일때는 name,type 저장 후 option로 redirect, Get일때는 name 과 type json 형식으로 반환
+@app.route('/getMenu', methods=['POST','GET'])
+def getMenu():
+    if request.method == 'POST':
+        name = request.form.get("name")
+        type = request.form.get("type")
+        session['name'] = name
+        session['type'] = type
+        return redirect(url_for('option'))
+    
+
+#option으로 이동
+@app.route('/option', methods = ['POST','GET'])
 def option():
-    name = request.form.get("name")
-    type = request.form.get("type")
     return render_template("option.html")
 
-@app.route('/purchase', methods = ['POST'])
+#Post일때는 data 저장 후 purchase로 redirect, Get일때는 data json 형식으로 반환
+@app.route('/getOption', methods=['POST','GET'])
+def getOption():
+    if request.method == 'POST':
+        data = request.form.get("data")
+        session['option'] = data
+        return redirect(url_for('purchase'))
+    
+
+
+#purchase로 이동
+@app.route('/purchase', methods = ['POST','GET'])
 def purchase():
-    data = request.form.get("data")
     return render_template("purchase.html")
+
+
+@app.route('/getData', methods = ['POST','GET'])
+def getData():
+    order_type = session.get('orderType', '')
+    name = session.get('name', '')
+    type = session.get('type', '')
+    option = session.get('option', '')
+    data = jsonify({"name": name,"orderType": order_type,"type": type,"option": option})
+    return data
+
 
 
 ## 주문 정보 가지고 오기

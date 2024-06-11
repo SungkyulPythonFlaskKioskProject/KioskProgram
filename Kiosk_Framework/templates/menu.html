@@ -29,19 +29,19 @@
             const SelectType = ({ setType, type }) => {
                 const onClickHandler = (event) => {
                     const id = event.target.id;
-                    if (id === "assemble") {
-                        setType(0);
-                    } else if (id === "full") {
-                        setType(1);
-                    }
+                    setType(id);
                 };
 
                 return (
                     <div className='select_type'>
-                        <div id='assemble' onClick={onClickHandler} className={type === 0 ? "type_selected" : ""}>
+                        <div
+                            id='assemble'
+                            onClick={onClickHandler}
+                            className={type === "assemble" ? "type_selected" : ""}
+                        >
                             조립식으로 구매
                         </div>
-                        <div id='full' onClick={onClickHandler} className={type === 1 ? "type_selected" : ""}>
+                        <div id='full' onClick={onClickHandler} className={type === "full" ? "type_selected" : ""}>
                             완제품으로 구매
                         </div>
                     </div>
@@ -55,7 +55,7 @@
 
                     const form = document.createElement("form");
                     form.method = "POST";
-                    form.action = "/option";
+                    form.action = "/getMenu";
 
                     const hiddenField = document.createElement("input");
                     hiddenField.type = "hidden";
@@ -68,6 +68,7 @@
                     hiddenField2.value = type;
 
                     form.appendChild(hiddenField);
+                    form.appendChild(hiddenField2);
                     document.body.appendChild(form);
                     form.submit();
 
@@ -168,7 +169,7 @@
             };
 
             const App = () => {
-                const [type, setType] = React.useState(0);
+                const [type, setType] = React.useState("assemble");
                 const [menu, setMenu] = React.useState("");
 
                 return (

@@ -108,9 +108,10 @@
                             alert(
                                 `선택하신 옵션은 ${data.bread} ${data.length} ${data.cheese} ${data.vege} ${data.addit} ${data.set} ${data.setMenu} 입니다.`
                             );
+
                             const form = document.createElement("form");
                             form.method = "POST";
-                            form.action = "/purchase";
+                            form.action = "/getOption";
 
                             const hiddenField = document.createElement("input");
                             hiddenField.type = "hidden";

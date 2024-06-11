@@ -32,11 +32,21 @@
             const Option_progress = ({ currentStep }) => {
                 return (
                     <div className='option_progress'>
-                        <div id='choice_bread'>◆빵 선택</div>
-                        <div id='choice_cheese'>◆치즈 선택</div>
-                        <div id='choice_vege'>◆야채 선택</div>
-                        <div id='choice_vege'>◆추가토핑 선택</div>
-                        <div id='choice_vege'>◆세트 선택</div>
+                        <div id='choice_bread' className={currentStep == 1 ? "option_pro" : ""}>
+                            ◆빵 선택
+                        </div>
+                        <div id='choice_cheese' className={currentStep == 2 ? "option_pro" : ""}>
+                            ◆치즈 선택
+                        </div>
+                        <div id='choice_vege' className={currentStep == 3 ? "option_pro" : ""}>
+                            ◆야채 선택
+                        </div>
+                        <div id='choice_vege' className={currentStep == 4 ? "option_pro" : ""}>
+                            ◆추가토핑 선택
+                        </div>
+                        <div id='choice_vege' className={currentStep == 5 ? "option_pro" : ""}>
+                            ◆세트 선택
+                        </div>
                     </div>
                 );
             };
